@@ -1,0 +1,6 @@
+{
+    "solidity.defaultCompiler": "embedded",
+    "solidity.remappings": [
+        "@openzeppelin/=/Users/robert/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.7.2"
+      ]
+}
