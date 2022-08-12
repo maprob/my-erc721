@@ -6,8 +6,10 @@ def main():
     dev = accounts.add(config["wallets"]["from_key"])
     advanced_collectible = MyERC721[len(MyERC721) - 1]
     transaction = advanced_collectible.create({"from": dev})
+
     print("Waiting on second transaction...")
     transaction.wait(1)
+    
     listen_for_event(
         advanced_collectible, "CreatedNFT", timeout=200, poll_interval=10
     )

@@ -11,8 +11,8 @@ contract MyERC721 is ERC721Enumerable, ERC721URIStorage, Ownable {
     string baseURI;
     string public baseExtension = ".json";
     uint256 public tokenCounter = 0;
-    uint256 public maxSupply = 50;
-    uint256 public cost = 0.05 ether;
+    uint256 public maxSupply = 5;
+    uint256 public cost = 0.001 ether;
 
     mapping(uint256 => address) public owners;
     mapping(uint256 => string) private _tokenURIs;
@@ -31,8 +31,8 @@ contract MyERC721 is ERC721Enumerable, ERC721URIStorage, Ownable {
 
     function create() public payable
     {
-        require (totalSupply() < maxSupply);
-        require(msg.value == cost);
+        require(totalSupply() < maxSupply);
+        require(msg.value >= cost);
 
         string memory _tokenURI = tokenURI(tokenCounter);
 
@@ -58,7 +58,7 @@ contract MyERC721 is ERC721Enumerable, ERC721URIStorage, Ownable {
 
         string memory currentBaseURI = _baseURI();
         return bytes(currentBaseURI).length > 0
-            ? string(abi.encodePacked(currentBaseURI, Strings.toString(tokenCounter), baseExtension))
+            ? string(abi.encodePacked(currentBaseURI, "/", Strings.toString(tokenCounter), baseExtension))
             : "";
     }
 
