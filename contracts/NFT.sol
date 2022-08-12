@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// Credit: HashLips
 
 pragma solidity >=0.7.0 <0.9.0;
 
