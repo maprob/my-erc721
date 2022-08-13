@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-// Credit: HashLips
 
 pragma solidity >=0.7.0 <0.9.0;
 
@@ -31,8 +30,8 @@ contract NFT is ERC721Enumerable, Ownable
     uint _timeToReveal
   ) ERC721(_name, _symbol)
   {
-    setBaseURI(_initBaseURI);
-    setNotRevealedURI(_initNotRevealedUri);
+    baseURI = _initBaseURI;
+    notRevealedUri = _initNotRevealedUri;
     timeToReveal = _timeToReveal;
     deployDate = block.timestamp;
   }
@@ -99,40 +98,10 @@ contract NFT is ERC721Enumerable, Ownable
         ? string(abi.encodePacked(currentBaseURI, "/", tokenId.toString(), baseExtension))
         : "";
   }
-  
-  function setCost(uint256 _newCost) public onlyOwner
-  {
-    cost = _newCost;
-  }
 
   function timeUntilReveal() public view returns (uint)
   {
     return ((deployDate + timeToReveal) - block.timestamp);
-  }
-
-  function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner
-  {
-    maxMintAmount = _newmaxMintAmount;
-  }
-  
-  function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner
-  {
-    notRevealedUri = _notRevealedURI;
-  }
-
-  function setBaseURI(string memory _newBaseURI) public onlyOwner
-  {
-    baseURI = _newBaseURI;
-  }
-
-  function setBaseExtension(string memory _newBaseExtension) public onlyOwner
-  {
-    baseExtension = _newBaseExtension;
-  }
-
-  function pause(bool _state) public onlyOwner
-  {
-    paused = _state;
   }
  
   function withdraw() public payable onlyOwner
