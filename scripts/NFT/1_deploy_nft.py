@@ -6,9 +6,11 @@ def main():
     notRevealedUri = ""
     pf = 3.5e+9
     name, symb = "MyNFT", "NFT"
+    timeToReveal = 60 # 1 minute
 
     nft = NFT.deploy(
-        name, symb, baseUri, notRevealedUri,
+        name, symb, baseUri, notRevealedUri, 
+        timeToReveal, 
         {"from": acc, "priority_fee": pf},
         publish_source=True
     )

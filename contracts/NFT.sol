@@ -11,23 +11,30 @@ contract NFT is ERC721Enumerable, Ownable
   using Strings for uint256;
 
   string baseURI;
+  uint timeToReveal;
+  uint deployDate;
+
   string public baseExtension = ".json";
   uint256 public cost = 0.01 ether;
   uint256 public maxSupply = 5;
   uint256 public maxMintAmount = 5;
   bool public paused = false;
-  bool public revealed = false;
   string public notRevealedUri;
+
+  event CreatedNFT(uint256 indexed tokenId, string tokenURI);
 
   constructor(
     string memory _name,
     string memory _symbol,
     string memory _initBaseURI,
-    string memory _initNotRevealedUri
+    string memory _initNotRevealedUri,
+    uint _timeToReveal
   ) ERC721(_name, _symbol)
   {
     setBaseURI(_initBaseURI);
     setNotRevealedURI(_initNotRevealedUri);
+    timeToReveal = _timeToReveal;
+    deployDate = block.timestamp;
   }
 
   // internal
@@ -52,7 +59,9 @@ contract NFT is ERC721Enumerable, Ownable
 
     for (uint256 i = 1; i <= _mintAmount; i++)
     {
-      _safeMint(msg.sender, supply + i);
+      uint256 tokenCount = supply + i;
+      _safeMint(msg.sender, tokenCount);
+      emit CreatedNFT(tokenCount, tokenURI(tokenCount));
     }
   }
 
@@ -81,8 +90,8 @@ contract NFT is ERC721Enumerable, Ownable
       "ERC721Metadata: URI query for nonexistent token"
     );
     
-    if(revealed == false) {
-        return notRevealedUri;
+    if (block.timestamp <= (deployDate + timeToReveal)) {
+      return notRevealedUri;
     }
 
     string memory currentBaseURI = _baseURI();
@@ -90,16 +99,15 @@ contract NFT is ERC721Enumerable, Ownable
         ? string(abi.encodePacked(currentBaseURI, "/", tokenId.toString(), baseExtension))
         : "";
   }
-
-  //only owner
-  function reveal() public onlyOwner
-  {
-    revealed = true;
-  }
   
   function setCost(uint256 _newCost) public onlyOwner
   {
     cost = _newCost;
+  }
+
+  function timeUntilReveal() public view returns (uint)
+  {
+    return ((deployDate + timeToReveal) - block.timestamp);
   }
 
   function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner
