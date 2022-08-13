@@ -1,4 +1,2 @@
 ## Info
-This nft has no delayed reveal functionality
-MyERC721 was my pre-forked attempt and gas fees are laughable - the contract sucks
-NFT was forked from hashlips and works well
+An NFT where nothing can be changed, the URI is revealed after a time period and the owner can't change the price, or the URI. This is done to adhere to the principles of decentralisation and autonomity. If in the unfortunate case where the URI becomes deprecated, the owner of this contract does not lay fault as this contract was made with all the intentions of being decentralised.
